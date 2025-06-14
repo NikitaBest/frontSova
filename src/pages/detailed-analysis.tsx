@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Sparkles, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 
 interface DetailedResults {
   zodiac_signs: { person1: string; person2: string };
@@ -22,7 +22,6 @@ interface DetailedResults {
 export default function DetailedAnalysisPage() {
   const [location, setLocation] = useLocation();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [results, setResults] = useState<DetailedResults | null>(null);
 
   // Получаем данные из location.state или localStorage
@@ -81,15 +80,8 @@ export default function DetailedAnalysisPage() {
               </div>
             </div>
           )}
-          {/* Error */}
-          {error && (
-            <div className="flex flex-col items-center justify-center py-10 w-full">
-              <div className="text-red-400 text-center mb-2">{error}</div>
-              <Button onClick={() => setLocation("/")}>На главную</Button>
-            </div>
-          )}
           {/* Results */}
-          {results && !loading && !error && (
+          {results && !loading && (
             <div className="flex flex-col items-center w-full animate-fade-in">
               <div className="mb-4 text-center">
                 <div className="text-2xl font-bold text-purple-600 mb-2">{results.zodiac_signs.person1} &amp; {results.zodiac_signs.person2}</div>

@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AnimatedProgress } from "./animated-progress";
-import { shareCompatibilityResults } from "@/lib/telegram";
 import type { CompatibilityResults } from "@shared/schema";
 
 interface ResultsDisplayProps {
