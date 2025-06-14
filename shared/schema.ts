@@ -1,14 +1,8 @@
 import { z } from "zod";
 
 export const compatibilityRequestSchema = z.object({
-  userId: z.string(),
-  partnerId: z.string(),
-  birthDate: z.string(),
-  partnerBirthDate: z.string(),
-  gender: z.enum(["male", "female"]),
-  partnerGender: z.enum(["male", "female"]),
-  person1Date: z.string().optional(),
-  person2Date: z.string().optional(),
+  person1Date: z.string().min(1, "Введите дату рождения"),
+  person2Date: z.string().min(1, "Введите дату рождения"),
   person1Time: z.string().optional(),
   person2Time: z.string().optional(),
   telegramUserId: z.string().optional(),
@@ -17,8 +11,6 @@ export const compatibilityRequestSchema = z.object({
 export type CompatibilityRequest = z.infer<typeof compatibilityRequestSchema>;
 
 export type CompatibilityResults = {
-  score: number;
-  description: string;
   lucky_colors: string[];
   best_activities: string[];
   best_dates?: string[];
@@ -31,4 +23,9 @@ export type CompatibilityResults = {
   detailed_description?: string;
   best_dates_comment?: string;
   relationship_tips?: string;
+  zodiac_compatibility: number;
+  elemental_compatibility: number;
+  numerological_compatibility: number;
+  emotional_compatibility: number;
+  intellectual_compatibility: number;
 }; 

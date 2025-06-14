@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { EnhancedForm } from "@/components/enhanced-form";
 import { ResultsDisplay } from "@/components/results-display";
-import { apiRequest } from "@/lib/queryClient";
 import { initTelegramWebApp } from "@/lib/telegram";
+import { calculateCompatibility } from "@/lib/compatibility";
 import type { CompatibilityRequest, CompatibilityResults } from "@shared/schema";
 
 type Screen = "input" | "loading" | "results";
@@ -17,26 +16,22 @@ export default function CompatibilityPage() {
     initTelegramWebApp();
   }, []);
 
-  const compatibilityMutation = useMutation({
-    mutationFn: async (data: CompatibilityRequest) => {
-      const response = await apiRequest("POST", "/api/compatibility", data);
-      return response.json();
-    },
-    onSuccess: (data) => {
-      setResults(data.results);
-      setCurrentScreen("results");
-      setError("");
-    },
-    onError: (error: Error) => {
-      setError(error.message || "Произошла ошибка при расчете совместимости");
-      setCurrentScreen("input");
-    },
-  });
-
   const handleSubmit = async (data: CompatibilityRequest) => {
     setError("");
     setCurrentScreen("loading");
-    compatibilityMutation.mutate(data);
+    try {
+      const results = await calculateCompatibility(
+        data.person1Date,
+        data.person1Time || "",
+        data.person2Date,
+        data.person2Time || ""
+      );
+      setResults(results);
+      setCurrentScreen("results");
+    } catch (error: any) {
+      setError(error.message || "Произошла ошибка при расчете совместимости");
+      setCurrentScreen("input");
+    }
   };
 
   const handleRestart = () => {
@@ -69,7 +64,7 @@ export default function CompatibilityPage() {
           {currentScreen === "input" && (
             <EnhancedForm
               onSubmit={handleSubmit}
-              isLoading={compatibilityMutation.isPending}
+              isLoading={String(currentScreen) === "loading"}
               error={error}
             />
           )}

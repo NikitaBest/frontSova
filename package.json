@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "tsx server.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -45,6 +46,7 @@
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^11.13.1",
     "input-otp": "^1.4.2",
+    "json5": "^2.2.3",
     "lucide-react": "^0.453.0",
     "next-themes": "^0.4.6",
     "react": "^18.3.1",
@@ -72,4 +74,4 @@
     "typescript": "5.6.3",
     "vite": "^5.4.14"
   }
-} 
+}
